@@ -19,8 +19,7 @@
 ### 1. 克隆项目
 
 ```bash
-git clone <your-repo-url>
-cd miniagent
+git clone https://github.com/cyprer/miniagent.git
 ```
 
 ### 2. 创建虚拟环境

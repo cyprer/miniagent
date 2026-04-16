@@ -1,10 +1,11 @@
 import os
-import sys
 from dotenv import load_dotenv
 from langchain_anthropic import ChatAnthropic
 from langgraph.checkpoint.memory import InMemorySaver
 from langchain.agents import create_agent
 from langchain.messages import AIMessageChunk
+import datetime
+from langchain.tools import tool
 
 load_dotenv()
 
@@ -17,12 +18,20 @@ model = ChatAnthropic(
 )
 
 checkpointer = InMemorySaver()
-agent = create_agent(model, tools=[], checkpointer=checkpointer)
+
+# 定义获取当前系统时间的tool
+@tool
+def get_current_time() -> str:
+    """获取当前系统时间，格式为YYYY-MM-DD HH:MM:SS"""
+    now = datetime.datetime.now()
+    return now.strftime("%Y-%m-%d %H:%M:%S")
+
+agent = create_agent(model, tools=[get_current_time], checkpointer=checkpointer)
 
 print("对话已启动（输入 exit/quit/q 退出）:\n")
-
+now = datetime.datetime.now()
 config = {"configurable": {"thread_id": "1"}}
-
+print(now.strftime("%Y-%m-%d %H:%M:%S"))
 while True:
     user_input = input("你: ").strip()
     if user_input.lower() in ["exit", "quit", "q", "退出"]:
@@ -49,7 +58,7 @@ while True:
             print("🧠 思考: ", end="")
             show_reasoning = True
         if reasoning:
-            print(f"[thinking] {reasoning[0]['reasoning']}", end="")
+            print(f"{reasoning[0]['reasoning']}", end="")
 
         if text and not show_answer:
             print()
