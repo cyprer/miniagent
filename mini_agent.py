@@ -19,9 +19,10 @@ model = ChatAnthropic(
 
 checkpointer = InMemorySaver()
 
-SYSTEM_PROMPT = """你是一个智能助手。每次调用 web_search 搜索工具之前，**必须先调用 get_current_time 工具获取当前时间**，只有知道当前时间才能提供准确的信息。
+SYSTEM_PROMPT = """你是一个智能助手。
 
 重要规则：
+- 只有在需要使用 web_search 获取实时信息时，才先调用 get_current_time 获取当前时间；普通对话或问候不需要获取时间
 - 调用 web_search 之前，先调用 get_current_time
 - 返回结果时你应该标注信息的来源以及发布时间
 - 遇到你不确定的信息你应该告知用户或者你需要用户提供一些信息你应该及时询问

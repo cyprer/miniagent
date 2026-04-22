@@ -27,3 +27,5 @@ Thumbs.db
 # Lock files (optional - uncomment if you don't want to commit lock files)
 # uv.lock
 # pipfile.lock
+uv.lock
+.claude/settings.local.json
